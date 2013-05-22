@@ -111,9 +111,6 @@ class ExternalSystemCreator(object):
     def __init__(self, external_system_code):
         self.external_system_code = external_system_code
 
-    def _get_plugin_method_name(self, common_method):
-        return "_" + common_method
-
     def action_first_assignment(self, incidence, external_tt_id):
         raise NotImplementedError()
 
