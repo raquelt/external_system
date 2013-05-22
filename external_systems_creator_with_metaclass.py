@@ -11,7 +11,7 @@ import types
 #===============================================================================
 # Use decorator to that does the following:
 #    1.- calls the function given as a parameter
-#    2.- If the function returns "NotImplemented" do nothing. 
+#    2.- If the function raises NotImplementedError exception do nothing. 
 #    3.- Otherwise, record the result of the call (if it was successful or not)
 #===============================================================================
 def _common_process(func):
