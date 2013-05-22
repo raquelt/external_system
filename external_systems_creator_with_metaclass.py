@@ -31,7 +31,7 @@ def _common_process(func):
             incidence_id = args[0]['_id']
         else:
             print "Incidence id not passed as argument"
-            return False
+            return
         common_method = func.__name__
         print "INCIDENCE_ID=%s: External System=%s, Common " \
               "functionality for action %s: args: %s, kwargs: %s" % (
@@ -48,14 +48,12 @@ def _common_process(func):
             print "INCIDENCE_ID=%s: External System %s notified Ok of %s" % (
                     incidence_id, self.external_system_code, common_method)
 
-            # Record in history event ok
-            return True
+            # TODO: Record in history event ok
         
         except NotImplementedError:
             print "Action %s (external_system %s.) NOT IMPLEMENTED" \
                     % (common_method, self.external_system_code)
-            return False 
-
+            
         except Exception, exc:
             # Error notifying action. Record it in incidence history and send 
             # e-mail notification
@@ -64,9 +62,8 @@ def _common_process(func):
                         % (incidence_id, self.external_system_code, common_method,
                            type(exc).__name__, error_detail)
 
-            # Record in history event nok
+            # TODO: Record in history event nok
             # TODO: Send error notification (not specified yet)
-            return False
     return inner
 
 #===============================================================================
@@ -163,7 +160,8 @@ class ExampleExternalSystemPlugin(ExternalSystemCreator):
 
     def action_first_assignment(self, incidence, external_tt_id):
         if external_tt_id == self.EXTERNAL_TT_ID:
-            return True
+            #TODO: Call specific ws api...
+            pass
         else:
             raise Exception("Error invoking first assignment")
 
@@ -172,31 +170,36 @@ class ExampleExternalSystemPlugin(ExternalSystemCreator):
             print "Special case of delayed where external system must not be notified. Do nothing"
             raise NotImplementedError()  
         elif external_tt_id == self.EXTERNAL_TT_ID:
-            return True
+            #TODO: Call specific ws api...
+            pass
         else:
             raise Exception("Error invoking delayed")
 
     def action_restored(self, incidence, external_tt_id, causeStatus):
         if external_tt_id == self.EXTERNAL_TT_ID:
-            return True
+            #TODO: Call specific ws api...
+            pass
         else:
             raise Exception("Error invoking restored")
 
     def action_solved(self, incidence, external_tt_id, causeStatus):
         if external_tt_id == self.EXTERNAL_TT_ID:
-            return True
+            #TODO: Call specific ws api...
+            pass
         else:
             raise ExternalError("Error invoking solved")
 
     def action_added_note(self, incidence, external_tt_id, annotation):
         if external_tt_id == self.EXTERNAL_TT_ID:
-            return True
+            #TODO: Call specific ws api...
+            pass
         else:
             raise Exception("Error invoking added note")
 
     def action_added_attachment(self, incidence, external_tt_id, uri, name):
         if external_tt_id == self.EXTERNAL_TT_ID:
-            return True
+            #TODO: Call specific ws api...
+            pass
         else:
             raise Exception("Error invoking added attachment")
         

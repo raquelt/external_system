@@ -47,8 +47,8 @@ class ExternalSystemCreator(object):
             elif args != None:
                 incidence_id = args[0]['_id']
             else:
-                print "Incidence id not passed as argument"
-                return False         
+                raise Exception("Incidence id not passed as argument")
+
             common_method = func.__name__
             print "INCIDENCE_ID=%s: External System=%s, Common " \
                   "functionality for action %s: args: %s, kwargs: %s" % (
@@ -63,24 +63,21 @@ class ExternalSystemCreator(object):
                 print "Action %s (external_system %s.) NOT IMPLEMENTED" % \
                     (common_method, self.external_system_code)              
                 # Not record anything in history
-                return False
             else:
                 try:
                     # Execute the plugin method
                     getattr(self, plugin_method)(*args, **kwargs)
 
                     print "INCIDENCE_ID=%s: External System %s notified Ok of %s" % (
-                          str(incidence_id), self.external_system_code, common_method)
-
-                    # Record in history event ok
-                    return True
+                           incidence_id, self.external_system_code, common_method)
+                    # TODO: Record in history event ok
                 except Exception, exc:
-                    # Error notifying action. Record it in incidence history and send 
-                    # e-mail notification
+                    # Error notifying action.
                     print "INCIDENCE_ID=%s: External System %s error on action %s. Detail: %s %s" \
                         % (incidence_id, self.external_system_code, common_method,
                            type(exc).__name__, exc)
-                    # Record in history event nok 
+                    # TODO: Record in history event nok
+                    # TODO: Send e-mail to admin to notify error
         return inner
 
     def _get_plugin_method_name(self, common_method):
@@ -137,32 +134,36 @@ class ExampleExternalSystemPlugin(ExternalSystemCreator):
 
     def _action_first_assignment(self, incidence, external_tt_id):
         if external_tt_id == self.EXTERNAL_TT_ID:
-            return True
+            #TODO: Call specific ws api...
+            pass
         else:
             raise Exception("Error invoking first assignment")
 
     def action_delayed(self, incidence, external_tt_id, causeStatus, delayedReason):
         if external_tt_id == self.EXTERNAL_TT_ID_NOT_IMPLEMENT:
             print "Delayed action for case where we do not need to inform external system. Do nothing"
-            return True
+            return
         else:
             return super(ExampleExternalSystemPlugin, self).action_delayed(incidence, external_tt_id, causeStatus, delayedReason)
         
     def _action_delayed(self, incidence, external_tt_id, causeStatus, delayedReason):
         if external_tt_id == self.EXTERNAL_TT_ID:
-            return True
+            #TODO: Call specific ws api...
+            pass
         else:
             raise Exception("Error invoking delayed")
 
     def _action_restored(self, incidence, external_tt_id, causeStatus):
         if external_tt_id == self.EXTERNAL_TT_ID:
-            return True
+            #TODO: Call specific ws api...
+            pass
         else:
             raise Exception("Error invoking restored")
 
     def _action_solved(self, incidence, external_tt_id, causeStatus):
         if external_tt_id == self.EXTERNAL_TT_ID:
-            return True
+            #TODO: Call specific ws api...
+            pass
         else:
             raise Exception("Error invoking solved")
 
@@ -188,7 +189,8 @@ ex_sys.action_first_assignment(incidence=incidence_data, external_tt_id='EXTERNA
 #===============================================================================
 # Plugin does not implement this event.
 #===============================================================================
-ex_sys.action_active(incidence=incidence_data, external_tt_id='EXTERNAL_ID_OK', causeStatus="This is a test")
+ex_sys.action_active(incidence=incidence_data, external_tt_id='EXTERNAL_ID_OK',
+                     causeStatus="This is a test")
 
 #===============================================================================
 # Plugin implements this event but only for certain data
