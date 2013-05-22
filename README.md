@@ -3,12 +3,13 @@ External System Functionality Plugins
 
 What is the Problem?
 
-If a ticket in UDo is created by an external system, UDo may need to notify the external system of certain events upon the ticket. 
-UDo should normally also record the notification result in the ticket history.
+If a ticket in UDo is created by an external system, UDo may need to notify the external system of certain actions made on the ticket. 
+UDo should normally also record the notification result in the ticket history, send an e-mail to an integrator operator if something goes wrong, etc.
 
-The integration with each external system may imply different degree of notification events, for example: 
+The integration with each external system may have different specific behaviour, for example: 
 * an external system may not need to be notified of all possible UDo events.
 * an external system may need to be notified of an event only under certain conditions
+* each external system usually offers a different web service to be invoked for the event notifications
 
 The solution should work in a generic way for all possible external systems
 
